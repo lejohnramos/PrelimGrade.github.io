@@ -97,7 +97,7 @@
     <div class="flex-container">
         <div class="box">
             <div class="note">
-                Note: Put your grades as values between 1-100, not in the grade point scale.
+                Note: Put your grades as values between 1-99, not in the grade point scale.
             </div>
 
             <h2>Prelim Grade</h2>
@@ -153,7 +153,7 @@
 
         def calculate_final(prelim_total):
             required_grade = (75 - prelim_total * 0.2) / 0.8
-            Element("final_result").element.innerHTML = f"Required Midterm and Finalterm: {required_grade:.2f}<br>"
+            Element("final_result").element.innerHTML = f"Passing is 75. Required Midterm and Finalterm to pass: {required_grade:.2f}<br>"
 
             if required_grade > 99:
                 Element("final_result").element.innerHTML += "The required grades are too high to achieve a passing grade of 75.<br>"
@@ -164,7 +164,7 @@
             else:
                 required_grade_deans = (90 - prelim_total * 0.2) / 0.8
                 if required_grade_deans <= 99:
-                    Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to work hard to get this.<br>"
+                    Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to achieve 90 in final grade.<br>"
                     Element("deans_result").element.innerHTML += f"Required Midterm and Finalterm for Dean's List: {required_grade_deans:.2f}"
                 else:
                     Element("deans_result").element.innerHTML = "We're very sorry you cannot become a Dean's Lister. Better luck next time :)"
