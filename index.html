@@ -12,7 +12,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            height: auto;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
@@ -29,9 +29,11 @@
 
         .flex-container {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
             margin-top: 50px;
+            width: 100%;
         }
 
         .box {
@@ -42,6 +44,8 @@
             text-align: center;
             background-color: #f9f9f9;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1 1 300px;
+            max-width: 100%;
         }
 
         .group-box {
@@ -73,6 +77,18 @@
         .deans-lister h3 {
             margin-bottom: 10px;
         }
+
+        label {
+            display: block; /* Ensures labels stack */
+            text-align: left; /* Aligns labels to the left */
+            margin-top: 10px; /* Adds spacing above each label */
+        }
+
+        input {
+            width: calc(100% - 20px); /* Makes input fields full-width */
+            padding: 5px; /* Adds padding for comfort */
+            margin-bottom: 10px; /* Space below inputs */
+        }
     </style>
 </head>
 <body>
@@ -81,28 +97,28 @@
     <div class="flex-container">
         <div class="box">
             <div class="note">
-                Note: Put your grades as values between 1-99, not in the grade point scale.
+                Note: Put your grades as values between 1-100, not in the grade point scale.
             </div>
 
             <h2>Prelim Grade</h2>
 
             <label for="attendance"><strong>Attendance (10%)</strong>:</label>
-            <input type="number" id="attendance"><br><br>
+            <input type="number" id="attendance"><br>
 
             <div class="group-box">
                 <h3><strong>30%</strong></h3>
                 <label for="recitation">Recitation (40%):</label>
-                <input type="number" id="recitation"><br><br>
+                <input type="number" id="recitation"><br>
 
                 <label for="quiz">Quiz (30%):</label>
-                <input type="number" id="quiz"><br><br>
+                <input type="number" id="quiz"><br>
 
                 <label for="requirements">Requirements (30%):</label>
-                <input type="number" id="requirements"><br><br>
-            </div><br>
+                <input type="number" id="requirements"><br>
+            </div>
 
             <label for="prelim_exam"><strong>Prelim Exam (60%)</strong>:</label>
-            <input type="number" id="prelim_exam"><br><br>
+            <input type="number" id="prelim_exam"><br>
 
             <button id="calculate_prelim">Calculate Prelim Total</button>
             <h3 id="prelim_result"></h3>
@@ -137,21 +153,18 @@
 
         def calculate_final(prelim_total):
             required_grade = (75 - prelim_total * 0.2) / 0.8
-            Element("final_result").element.innerHTML = f"Passing Grade is 75. Required Midterm and Finalterm to pass: {required_grade:.2f}<br>"
+            Element("final_result").element.innerHTML = f"Required Midterm and Finalterm: {required_grade:.2f}<br>"
 
-            # Check if required grade is above 99
             if required_grade > 99:
                 Element("final_result").element.innerHTML += "The required grades are too high to achieve a passing grade of 75.<br>"
             
-            # Check if prelim total is low
             if prelim_total < 75:
                 Element("final_result").element.innerHTML += f"Your Prelim Grade: {prelim_total:.2f}<br>"
                 Element("deans_result").element.innerHTML = "We're very sorry you cannot become a Dean's Lister. Better luck next time :)"
             else:
-                # Check for Dean's List eligibility
                 required_grade_deans = (90 - prelim_total * 0.2) / 0.8
                 if required_grade_deans <= 99:
-                    Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to achieve 90 above on final grade.<br>"
+                    Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to work hard to get this.<br>"
                     Element("deans_result").element.innerHTML += f"Required Midterm and Finalterm for Dean's List: {required_grade_deans:.2f}"
                 else:
                     Element("deans_result").element.innerHTML = "We're very sorry you cannot become a Dean's Lister. Better luck next time :)"
