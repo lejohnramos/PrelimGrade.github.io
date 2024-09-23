@@ -137,7 +137,7 @@
 
         def calculate_final(prelim_total):
             required_grade = (75 - prelim_total * 0.2) / 0.8
-            Element("final_result").element.innerHTML = f"Required Midterm and Finalterm to pass 75: {required_grade:.2f}<br>"
+            Element("final_result").element.innerHTML = f"Passing Grade is 75. Required Midterm and Finalterm to pass: {required_grade:.2f}<br>"
 
             # Check if required grade is above 99
             if required_grade > 99:
