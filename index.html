@@ -137,7 +137,7 @@
 
         def calculate_final(prelim_total):
             required_grade = (75 - prelim_total * 0.2) / 0.8
-            Element("final_result").element.innerHTML = f"Required Midterm and Finalterm: {required_grade:.2f}<br>"
+            Element("final_result").element.innerHTML = f"Required Midterm and Finalterm to pass 75: {required_grade:.2f}<br>"
 
             # Check if required grade is above 99
             if required_grade > 99:
@@ -151,7 +151,7 @@
                 # Check for Dean's List eligibility
                 required_grade_deans = (90 - prelim_total * 0.2) / 0.8
                 if required_grade_deans <= 99:
-                    Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to work harder to achieve.<br>"
+                    Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to achieve 90 above on final grade.<br>"
                     Element("deans_result").element.innerHTML += f"Required Midterm and Finalterm for Dean's List: {required_grade_deans:.2f}"
                 else:
                     Element("deans_result").element.innerHTML = "We're very sorry you cannot become a Dean's Lister. Better luck next time :)"
