@@ -110,7 +110,7 @@
         </div>
 
         <div class="box">
-            <h2>Required Midterm and Finalterm Grades to pass(75)</h2>
+            <h2>Required Midterm and Finalterm grade to pass(75 on final grade)</h2>
             <button id="calculate_final">Calculate Required Grades</button>
             <h3 id="final_result"></h3>
 
@@ -147,7 +147,7 @@
                 Element("final_result").element.innerHTML = f"Required Midterm and Finalterm: {required_grade:.2f}<br>"
 
                 # Message for Dean's Lister
-                Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to work hard to get this.<br>"
+                Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you need to achieve 90 above on your final grade.<br>"
 
                 # Required grades for Dean's List
                 required_grade_deans = (90 - prelim_total * 0.2) / 0.8
