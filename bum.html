@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator | Prelim Exam</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .note {
+            font-size: 16px;
+            color: red;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .box {
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin: 10px;
+            width: 300px;
+            text-align: center;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .group-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #f0f0f0;
+        }
+
+        .group-box h3 {
+            margin: 5px 0;
+        }
+
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .deans-lister {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .deans-lister h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Grade Calculator</h1>
+
+    <div class="flex-container">
+        <div class="box">
+            <!-- Note inside the Prelim Grade box, above the heading -->
+            <div class="note">
+                Note: Put your grades as values between 1-100, not in the grade point scale.
+            </div>
+
+            <h2>Prelim Grade</h2>
+
+            <label for="attendance"><strong>Attendance (10%)</strong>:</label>
+            <input type="number" id="attendance"><br><br>
+
+            <div class="group-box">
+                <h3><strong>30%</strong></h3>
+                <label for="recitation">Recitation (40%):</label>
+                <input type="number" id="recitation"><br><br>
+
+                <label for="quiz">Quiz (30%):</label>
+                <input type="number" id="quiz"><br><br>
+
+                <label for="requirements">Requirements (30%):</label>
+                <input type="number" id="requirements"><br><br>
+            </div><br>
+
+            <label for="prelim_exam"><strong>Prelim Exam (60%)</strong>:</label>
+            <input type="number" id="prelim_exam"><br><br>
+
+            <button id="calculate_prelim">Calculate Prelim Total</button>
+            <h3 id="prelim_result"></h3>
+        </div>
+
+        <div class="box">
+            <h2>Required Midterm and Finalterm Grades to pass(75)</h2>
+            <button id="calculate_final">Calculate Required Grades</button>
+            <h3 id="final_result"></h3>
+
+            <!-- Dean's Lister Section -->
+            <div class="deans-lister">
+                <h3>Dean's Lister Requirements(90)</h3>
+                <div id="deans_result"></div>
+            </div>
+        </div>
+    </div>
+
+    <py-script>
+        from pyscript import Element
+
+        # Corrected calculation for prelim grade
+        def calculate_prelim():
+            attendance = float(Element("attendance").element.value) * 0.1
+            recitation = float(Element("recitation").element.value) * 0.4
+            quiz = float(Element("quiz").element.value) * 0.3
+            requirements = float(Element("requirements").element.value) * 0.3
+            prelim_exam = float(Element("prelim_exam").element.value) * 0.6
+
+            # Correct formula for total prelim grade
+            total_prelim = attendance + ((recitation + quiz + requirements) * 0.3) + prelim_exam
+            Element("prelim_result").element.innerHTML = f"Prelim Grade: {total_prelim:.2f}"
+
+            return total_prelim
+
+        # Calculate required Midterm and Finalterm grades
+        def calculate_final(prelim_total):
+            if prelim_total >= 75:
+                # Required grades for passing
+                required_grade = (75 - prelim_total * 0.2) / 0.8
+                Element("final_result").element.innerHTML = f"Required Midterm and Finalterm: {required_grade:.2f}<br>"
+
+                # Message for Dean's Lister
+                Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to work hard to get this.<br>"
+
+                # Required grades for Dean's List
+                required_grade_deans = (90 - prelim_total * 0.2) / 0.8
+                Element("deans_result").element.innerHTML += f"Required Midterm and Finalterm for Dean's Lister: {required_grade_deans:.2f}"
+
+            else:
+                # Show message that the grade is too low and display total prelim grade
+                Element("final_result").element.innerHTML = (
+                    f"Your prelim grade is too low for calculation.<br>"
+                    f"Your Prelim Grade: {prelim_total:.2f}"
+                )
+
+        def setup():
+            Element("calculate_prelim").element.onclick = lambda event: calculate_prelim()
+            Element("calculate_final").element.onclick = lambda event: calculate_final(calculate_prelim())
+
+        setup()
+    </py-script>
+</body>
+</html>
