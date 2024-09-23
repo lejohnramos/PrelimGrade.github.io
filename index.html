@@ -80,9 +80,8 @@
 
     <div class="flex-container">
         <div class="box">
-            <!-- Note inside the Prelim Grade box, above the heading -->
             <div class="note">
-                Note: Put your grades as values between 1-100, not in the grade point scale.
+                Note: Put your grades as values between 1-99, not in the grade point scale.
             </div>
 
             <h2>Prelim Grade</h2>
@@ -110,13 +109,12 @@
         </div>
 
         <div class="box">
-            <h2>Required Midterm and Finalterm grade to pass(75 on final grade)</h2>
+            <h2>Required Midterm and Finalterm Grades</h2>
             <button id="calculate_final">Calculate Required Grades</button>
             <h3 id="final_result"></h3>
 
-            <!-- Dean's Lister Section -->
             <div class="deans-lister">
-                <h3>Dean's Lister Requirements(90)</h3>
+                <h3>Dean's Lister Requirements</h3>
                 <div id="deans_result"></div>
             </div>
         </div>
@@ -125,7 +123,6 @@
     <py-script>
         from pyscript import Element
 
-        # Corrected calculation for prelim grade
         def calculate_prelim():
             attendance = float(Element("attendance").element.value) * 0.1
             recitation = float(Element("recitation").element.value) * 0.4
@@ -133,32 +130,31 @@
             requirements = float(Element("requirements").element.value) * 0.3
             prelim_exam = float(Element("prelim_exam").element.value) * 0.6
 
-            # Correct formula for total prelim grade
             total_prelim = attendance + ((recitation + quiz + requirements) * 0.3) + prelim_exam
             Element("prelim_result").element.innerHTML = f"Prelim Grade: {total_prelim:.2f}"
 
             return total_prelim
 
-        # Calculate required Midterm and Finalterm grades
         def calculate_final(prelim_total):
-            if prelim_total >= 75:
-                # Required grades for passing
-                required_grade = (75 - prelim_total * 0.2) / 0.8
-                Element("final_result").element.innerHTML = f"Required Midterm and Finalterm: {required_grade:.2f}<br>"
+            required_grade = (75 - prelim_total * 0.2) / 0.8
+            Element("final_result").element.innerHTML = f"Required Midterm and Finalterm: {required_grade:.2f}<br>"
 
-                # Message for Dean's Lister
-                Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you need to achieve 90 above on your final grade.<br>"
-
-                # Required grades for Dean's List
-                required_grade_deans = (90 - prelim_total * 0.2) / 0.8
-                Element("deans_result").element.innerHTML += f"Required Midterm and Finalterm for Dean's Lister: {required_grade_deans:.2f}"
-
+            # Check if required grade is above 99
+            if required_grade > 99:
+                Element("final_result").element.innerHTML += "The required grades are too high to achieve a passing grade of 75.<br>"
+            
+            # Check if prelim total is low
+            if prelim_total < 75:
+                Element("final_result").element.innerHTML += f"Your Prelim Grade: {prelim_total:.2f}<br>"
+                Element("deans_result").element.innerHTML = "We're very sorry you cannot become a Dean's Lister. Better luck next time :)"
             else:
-                # Show message that the grade is too low and display total prelim grade
-                Element("final_result").element.innerHTML = (
-                    f"Your prelim grade is too low for calculation.<br>"
-                    f"Your Prelim Grade: {prelim_total:.2f}"
-                )
+                # Check for Dean's List eligibility
+                required_grade_deans = (90 - prelim_total * 0.2) / 0.8
+                if required_grade_deans <= 99:
+                    Element("deans_result").element.innerHTML = "If you want to be a Dean's Lister, you'll need to work hard to get this.<br>"
+                    Element("deans_result").element.innerHTML += f"Required Midterm and Finalterm for Dean's List: {required_grade_deans:.2f}"
+                else:
+                    Element("deans_result").element.innerHTML = "We're very sorry you cannot become a Dean's Lister. Better luck next time :)"
 
         def setup():
             Element("calculate_prelim").element.onclick = lambda event: calculate_prelim()
